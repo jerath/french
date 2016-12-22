@@ -1,0 +1,79 @@
+<html>
+ <head>
+  <title>Blank New Tab</title>
+  <style>
+  #start, form, div, input {
+    color: #2c3e50;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 2rem;
+  }
+
+  input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-color: #5e768e;
+  }
+
+  input:focus {
+    outline: 0;
+    border-color: #2c3e50;
+  }
+
+  button {
+    padding: 20px;
+    height: 60px;
+    border: none;
+    background-color: #1abc9c;
+    color: white;
+    font-family: sans-serif;
+    font-size: large;
+  }
+
+  #score-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  #score, #hurray {
+    color: #f1c40f;
+  }
+
+  #hurray {
+    font-size: 1.5em;
+  }
+
+  #timer p{
+    height: 100px;
+    margin: 30px auto;
+    line-height: 100px;
+  }
+
+  #timer .circle {
+    border-radius: 50%;
+    border: 1px solid;
+    width: 100px;
+  }
+
+  .incorrect {
+    color: #e74c3c;
+  }
+
+  .correct {
+    color: #2ecc71;
+  }
+
+  </style>
+ </head>
+ <body>
+  <div id='score-container'><span id='score'><span></div> 
+  <div style="height:40%"></div>
+  <form id="phrase"></form>
+  <div id="answer"></div>
+  <div id="hurray"></div>
+  <script src="script.js"></script>
+ </body>
+</html>
+
