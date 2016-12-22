@@ -32,7 +32,8 @@ function initializeScoreAndStats() {
   localStorage.highScore = localStorage.highScore || 0;
   localStorage.longestStreak = localStorage.longestStreak || 0;
   streakCounter = 0;
-  document.querySelector('#score').innerHTML = localStorage.score;  
+  document.querySelector('#high-score').innerHTML = `HIGH SCORE ${localStorage.highScore}`;
+  document.querySelector('#longest-streak').innerHTML = `LONGEST STREAK ${localStorage.longestStreak}`;
 }
 
 function startGame() {
@@ -45,7 +46,6 @@ function updateScoreAndStats() {
   const points = Math.max(5 - Math.round((Date.now() - lastAnswerTimeStamp) /1000), 1);
   streakCounter++;
   localStorage.score = parseInt(localStorage.score) + points;
-  document.querySelector('#score').innerHTML = localStorage.score;
 }
 
 function getGameOverHTML(userInput) {
@@ -75,6 +75,7 @@ function consoleUser() {
 
 function updateHighScore() {
   localStorage.highScore = parseInt(localStorage.score) - parseInt(startingScore);
+  document.querySelector('#high-score').innerHTML = `HIGH SCORE ${localStorage.highScore}`;
 }
 
 function beatHighScore() {
@@ -84,6 +85,7 @@ function beatHighScore() {
 
 function updateLongestStreak() {
   localStorage.longestStreak = streakCounter;
+  document.querySelector('#longest-streak').innerHTML = `LONGEST STREAK ${localStorage.longestStreak}`;
 }
 
 function beatLongestStreak() {
@@ -128,3 +130,10 @@ const prompts = {
 
 let question, questionHTML, lastAnswerTimeStamp, startingScore, streakCounter;
 startGame();
+
+// TODO:
+// Add current points and score above game
+// Refactor end of game streak and high score
+// Think of how the prompts data structure will need to change to add more functionality, like:
+// - new verbs
+// - switching the question and the answer around
