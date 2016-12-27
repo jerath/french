@@ -2,25 +2,38 @@
 // If you get it right, it says yay
 // If you get it wrong, it tells you the right thing.
 
-function getRandomKey() {
-  const keys = Object.keys(prompts)
+function getRandomKey(dict) {
+  const keys = Object.keys(dict)
   return keys[Math.floor(Math.random() * keys.length)];
 }
 
-function getRandomPromptWithAnswer() {
-  const key = getRandomKey();
-  return {
-    prompt: key,
-    answer: prompts[key] 
-  };
+function getRandomPromptWithAnswer(verb) {
+  const key = getRandomKey(verbsPrompts[verb]);
+  if (flipCoin()) {
+    return {
+      prompt: key,
+      answer: verbsPrompts[verb][key] 
+    };
+  } else {
+    return {
+      prompt: verbsPrompts[verb][key],
+      answer: key
+    };
+  }
+}
+
+function getRandomVerb() {
+  return getRandomKey(verbsPrompts);
 }
 
 function getQuestionHTML(question) {
+  console.log(question);
   return `<p>${question.prompt}</p><br><input type="text" autofocus required></input>`;
 }
 
 function setUpQuestion() {
-  question = getRandomPromptWithAnswer();
+  verb = getRandomVerb();
+  question = getRandomPromptWithAnswer(verb);
   questionHTML = getQuestionHTML(question);
   document.getElementById('phrase').innerHTML = questionHTML;
   lastAnswerTimeStamp = Date.now();
@@ -92,11 +105,15 @@ function beatLongestStreak() {
   return streakCounter > parseInt(localStorage.longestStreak);
 }
 
+function flipCoin() {
+  return Math.random() > 0.5;
+}
+
 document.querySelector('#phrase').addEventListener('submit', function(e) {
   e.preventDefault();
   const userInput = document.querySelector('input').value;
 
-  if (userInput.toUpperCase() == question.answer.toUpperCase()){
+  if (userInput.toUpperCase().trim() == question.answer.toUpperCase()){
     document.querySelector('input').innerHTML = '';
     updateScoreAndStats();
     setUpQuestion();
@@ -117,16 +134,64 @@ document.querySelector('#phrase').addEventListener('submit', function(e) {
   }
 })
 
-const prompts = {
-  'I have': "J'ai",
-  'You have': 'Tu as',
-  'He has': 'Il a',
-  'She has': 'Elle a',
-  'We have': 'Nous avons',
-  "Y'all have": 'Vous avez',
-  'They have (masc. plural)': 'Ils ont',
-  'They have (fem. plural)': 'Elles ont'
+const verbsPrompts = {
+  avoir: {
+    'I have': "J'ai",
+    'You have': 'Tu as',
+    'He has': 'Il a',
+    'She has': 'Elle a',
+    'We have': 'Nous avons',
+    "Y'all have": 'Vous avez',
+    'They have (mp)': 'Ils ont',
+    'They have (fp)': 'Elles ont'
+  },
+  aller: {
+    'I go': 'Je vais',
+    'You go': 'Tu vas',
+    'He goes': 'Il va',
+    'She goes': 'Elle va',
+    'We go': 'Nous allons',
+    "Y'all go": 'Vous allez',
+    'They go (mp)': 'Ils vont',
+    'They go (fp)': 'Elles vont'
+  },
+  être: {
+    'I am': 'Je suis',
+    'You are': 'Tu es',
+    'He is': 'Il est',
+    'She is': 'Elle est',
+    'We are': 'Nous sommes',
+    "Y'all are": 'Vous êtes',
+    'They are (mp)': 'Ils sont',
+    'They are (fp)': 'Elles sont',
+  }
 }
+
+const possessivePrompts = {
+  'mon ma mes': {
+    'père': 'mon',
+    'mère': 'ma',
+    'amies': 'mes',
+    'amis': 'mon'
+  },
+  'ton ta tes': {
+    'parents': 'tes',
+    'amis': 'ton',
+    'frère': 'ton',
+    'soeurs': 'tes'
+  },
+  'son sa ses': {
+    'devoirs': '',
+    'professeur': '',
+    'amis': '',
+    'amies': ''
+  },
+  'notre nos': {},
+  'votre vos': {},
+  'leur leurs': {}
+}
+
+console.log(verbsPrompts);
 
 let question, questionHTML, lastAnswerTimeStamp, startingScore, streakCounter;
 startGame();
